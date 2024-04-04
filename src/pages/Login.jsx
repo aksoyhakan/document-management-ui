@@ -4,6 +4,7 @@ import { useState } from "react";
 import { getBreakPoint } from "../constants";
 import { useWindowSize } from "react-use";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { useGlobal, useToast } from "../hooks";
 import { MainApiService } from "../utils";
 
@@ -16,6 +17,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const { width } = useWindowSize();
   const toast = useToast();
+  const navigate = useNavigate();
+
   const { name, token, setName, setToken, reset } = useGlobal((state) => ({
     name: state.name,
     token: state.token,
@@ -29,6 +32,7 @@ export default function Login() {
       const response = await fetchLogin(email, password);
       setName(response.name);
       setToken(response.token);
+      navigate("/");
       toast.open({
         content: `Welcome ${response.name}`,
         kind: "positive",
